@@ -213,7 +213,8 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
      * method is available, use it to refine the type. The results of
      * pd.getPropertyType() are sometimes inconsistent across platforms.
      * 
-     * @param pd
+     * @param rawType
+     * @param readMethod
      * @return
      */
     private Class<?> resolveRawPropertyType(Class<?> rawType, Method readMethod) {
@@ -577,18 +578,21 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
     @SuppressWarnings("unchecked")
     public Property getIndividualElementProperty(java.lang.reflect.Type type, String p, Property owner) {
         
-        String[] ps = p.split("\\[", 2);
-        String elementPropertyExpression = ps[1].substring(0, ps[1].length()-1);
+        int i = p.lastIndexOf("[");
+        String p0 = p.substring(0, i);
+        String p1 = p.substring(i + 1);
+        
+        String elementPropertyExpression = p1.substring(0, p1.length()-1);
         
         Property owningProperty;
         if (owner != null) {
             if (type.equals(owner.getType())) {
                 owningProperty = owner; 
             } else {
-                owningProperty = getProperty(type, ps[0], false, owner);
+                owningProperty = getProperty(type, p0, false, owner);
             }
         } else {
-            owningProperty = getProperty(type, ps[0]);
+            owningProperty = getProperty(type, p0);
         }
         
         
@@ -660,8 +664,8 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
      *            the property's owning type
      * @param expr
      *            the property expression to resolve
-     * @param properties
-     *            the known properties for the type
+     * @param isNestedLookup
+     * @param owner
      * @return the resolved Property
      * @throws MappingException
      *             if the expression cannot be resolved to a property for the

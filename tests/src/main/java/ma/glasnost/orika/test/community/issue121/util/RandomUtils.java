@@ -1,7 +1,5 @@
 package ma.glasnost.orika.test.community.issue121.util;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import java.util.Random;
 
 /**
@@ -17,6 +15,14 @@ public class RandomUtils {
     }
 
     public static String randomString() {
-        return RandomStringUtils.randomAlphabetic(10);
+    	String candidateChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    	StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            sb.append(candidateChars.charAt(random.nextInt(candidateChars
+                    .length())));
+        }
+    	
+        return sb.toString();
     }
 }

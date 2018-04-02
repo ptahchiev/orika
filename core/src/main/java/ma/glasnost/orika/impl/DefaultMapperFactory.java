@@ -18,7 +18,6 @@
 
 package ma.glasnost.orika.impl;
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
 import ma.glasnost.orika.*;
 import ma.glasnost.orika.Properties;
 import ma.glasnost.orika.StateReporter.Reportable;
@@ -53,7 +52,6 @@ import static java.lang.System.getProperty;
 import static ma.glasnost.orika.OrikaSystemProperties.*;
 import static ma.glasnost.orika.StateReporter.DIVIDER;
 import static ma.glasnost.orika.StateReporter.humanReadableSizeInMemory;
-import static ma.glasnost.orika.util.HashMapUtility.getConcurrentLinkedHashMap;
 
 /**
  * The mapper factory is the heart of Orika, a small container where metadata
@@ -71,7 +69,7 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
     protected final MapperGenerator mapperGenerator;
     protected final ObjectFactoryGenerator objectFactoryGenerator;
 
-    protected final ConcurrentLinkedHashMap<MapperKey, ClassMap<Object, Object>> classMapRegistry;
+    protected final ConcurrentHashMap<MapperKey, ClassMap<Object, Object>> classMapRegistry;
     protected final SortedCollection<Mapper<Object, Object>> mappersRegistry;
     protected final SortedCollection<Filter<Object, Object>> filtersRegistry;
     protected final MappingContextFactory contextFactory;
@@ -109,7 +107,7 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
         
         this.converterFactory = new ConverterFactoryFacade(builder.converterFactory);
         this.compilerStrategy = builder.compilerStrategy;
-        this.classMapRegistry = getConcurrentLinkedHashMap(Integer.MAX_VALUE);
+        this.classMapRegistry = new ConcurrentHashMap<>();
         this.mappersRegistry = new SortedCollection<Mapper<Object, Object>>(Ordering.MAPPER);
         this.filtersRegistry = new SortedCollection<Filter<Object, Object>>(Ordering.FILTER);
         this.explicitAToBRegistry = new ConcurrentHashMap<Type<?>, Set<Type<?>>>();

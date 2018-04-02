@@ -26,18 +26,19 @@ import ma.glasnost.orika.metadata.Type;
  * help with guessing default mappings of fields when a straight
  * equivalent name match is not found
  * 
- * @deprecated use ma.glasnost.orika.FieldSuggester instead
+ * @deprecated use ma.glasnost.orika.DefaultFieldMapper instead
  * @author matt.deboer@gmail.com
  */
 @Deprecated
 public interface MappingHint {
 	
 	/**
-	 * @param sourceExpression
+	 * @param fromProperty
+	 * @param fromPropertyType
 	 * @return a suggested optional mapping name for the given property,
 	 * or <code>null</code> if no suggestion for the given property
 	 */
-	public String suggestMappedField(String fromProperty, Class<?> fromPropertyType);
+	String suggestMappedField(String fromProperty, Class<?> fromPropertyType);
 	
 	
 	/**
@@ -46,7 +47,7 @@ public interface MappingHint {
 	 * 
 	 * @author matt.deboer@gmail.com
 	 */
-	public static class DefaultFieldMappingConverter implements DefaultFieldMapper {
+	class DefaultFieldMappingConverter implements DefaultFieldMapper {
 
 		private MappingHint delegate;
 		public DefaultFieldMappingConverter(MappingHint delegate) {

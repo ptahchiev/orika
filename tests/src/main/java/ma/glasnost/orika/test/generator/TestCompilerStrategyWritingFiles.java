@@ -20,18 +20,17 @@ package ma.glasnost.orika.test.generator;
 
 import java.io.File;
 
-import ma.glasnost.orika.OrikaSystemProperties;
-import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
-import ma.glasnost.orika.test.DynamicSuite;
-import ma.glasnost.orika.test.DynamicSuite.Scenario;
-import ma.glasnost.orika.test.DynamicSuite.TestCasePattern;
-
-import org.h2.util.IOUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
+
+import ma.glasnost.orika.OrikaSystemProperties;
+import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
+import ma.glasnost.orika.test.DynamicSuite;
+import ma.glasnost.orika.test.DynamicSuite.Scenario;
+import ma.glasnost.orika.test.DynamicSuite.TestCasePattern;
 
 /**
  * This provides a test case that verifies that Orika generates source and 
@@ -87,7 +86,8 @@ public class TestCompilerStrategyWritingFiles {
     	
     	} finally {
     		// Note: this is coming from hibernate jar which is included only for test
-    		IOUtils.deleteRecursive(generatedSrc.getParentFile().getAbsolutePath(), true);
+    		//TODO: is this still needed? The function doesn't exist anymore
+    		//IOUtils.deleteRecursive(generatedSrc.getParentFile().getAbsolutePath(), true);
     	}
     	
     }

@@ -18,7 +18,6 @@
 
 package ma.glasnost.orika.impl;
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
 import ma.glasnost.orika.*;
 import ma.glasnost.orika.MappingStrategy.Key;
 import ma.glasnost.orika.StateReporter.Reportable;
@@ -35,10 +34,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static ma.glasnost.orika.StateReporter.DIVIDER;
 import static ma.glasnost.orika.StateReporter.humanReadableSizeInMemory;
-import static ma.glasnost.orika.util.HashMapUtility.getConcurrentLinkedHashMap;
 
 /**
  * MapperFacadeImpl is the base implementation of MapperFacade
@@ -49,7 +48,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     private final MappingContextFactory contextFactory;
     protected final UnenhanceStrategy unenhanceStrategy;
     private final UnenhanceStrategy userUnenhanceStrategy;
-    private final ConcurrentLinkedHashMap<Key, MappingStrategy> strategyCache = getConcurrentLinkedHashMap(500);
+    private final ConcurrentHashMap<Key, MappingStrategy> strategyCache = new ConcurrentHashMap<>();
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ExceptionUtility exceptionUtil;
     
@@ -188,7 +187,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
             }
             MappingStrategy existing = strategyCache.putIfAbsent(key, strategy);
             if (existing != null) {
-                strategy = existing;
+            	strategy = existing;
             }
         }
         

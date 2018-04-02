@@ -24,8 +24,7 @@
 
 package ma.glasnost.orika.jsr166x;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * A {@link ConcurrentMap} supporting {@link NavigableMap} operations.
@@ -58,7 +57,7 @@ public interface ConcurrentNavigableMap<K,V> extends ConcurrentMap<K,V>, Navigab
      * <tt>toKey</tt> is <tt>null</tt> and this map does not support
      * <tt>null</tt> keys.
      */
-    public ConcurrentNavigableMap<K,V> subMap(K fromKey, K toKey);
+    ConcurrentNavigableMap<K,V> subMap(K fromKey, K toKey);
 
     /**
      * Returns a view of the portion of this map whose keys are strictly less
@@ -75,7 +74,7 @@ public interface ConcurrentNavigableMap<K,V> extends ConcurrentMap<K,V>, Navigab
      * @throws NullPointerException if <tt>toKey</tt> is <tt>null</tt>
      * and this map does not support <tt>null</tt> keys.
      */
-    public ConcurrentNavigableMap<K,V> headMap(K toKey);
+    ConcurrentNavigableMap<K,V> headMap(K toKey);
 
     /**
      * Returns a view of the portion of this map whose keys are
@@ -91,5 +90,5 @@ public interface ConcurrentNavigableMap<K,V> extends ConcurrentMap<K,V>, Navigab
      * @throws NullPointerException if <tt>fromKey</tt> is <tt>null</tt>
      * and this map does not support <tt>null</tt> keys.
      */
-    public ConcurrentNavigableMap<K,V>  tailMap(K fromKey);
+    ConcurrentNavigableMap<K,V>  tailMap(K fromKey);
 }

@@ -25,6 +25,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveWrapperHolder;
@@ -239,15 +240,25 @@ public interface TestCaseClasses {
 		}
 
 		public boolean equals(Object that) {
-			return EqualsBuilder.reflectionEquals(this,that);
+			 if (that == this) return true;
+		        if (!(that instanceof NestedPrimitiveHolder)) {
+		            return false;
+		        }
+		     NestedPrimitiveHolder nph = (NestedPrimitiveHolder) that;
+		     return Objects.equals(getCharValue(), nph.getCharValue()) &&
+		    		 Objects.equals(isBooleanValue(), nph.isBooleanValue()) &&
+		    		 Objects.equals(getByteValue(), nph.getByteValue()) &&
+		    		 Objects.equals(getNumbers(), nph.getNumbers());
 		}
 		
 		public int hashCode() {
-			return HashCodeBuilder.reflectionHashCode(this);
+			return Objects.hash(charValue, booleanValue, byteValue, numbers);
 		}
 		
+		@Override
 		public String toString() {
-			return ToStringBuilder.reflectionToString(this,ToStringStyle.SHORT_PREFIX_STYLE);
+			return "NestedPrimitiveHolder [charValue=" + charValue + ", booleanValue=" + booleanValue + ", byteValue="
+					+ byteValue + ", numbers=" + numbers + "]";
 		}
     }
     
@@ -288,16 +299,27 @@ public interface TestCaseClasses {
 			return doubleValue;
 		}
 
-		public boolean equals(Object that) {
-			return EqualsBuilder.reflectionEquals(this,that);
-		}
-		
-		public int hashCode() {
-			return HashCodeBuilder.reflectionHashCode(this);
-		}
-		
+		@Override
 		public String toString() {
-			return ToStringBuilder.reflectionToString(this,ToStringStyle.SHORT_PREFIX_STYLE);
+			return "PrimitiveNumberHolder [shortValue=" + shortValue + ", intValue=" + intValue + ", longValue="
+					+ longValue + ", floatValue=" + floatValue + ", doubleValue=" + doubleValue + "]";
+		}
+
+		@Override
+		public boolean equals(final Object other) {
+			if (!(other instanceof PrimitiveNumberHolder)) {
+				return false;
+			}
+			PrimitiveNumberHolder castOther = (PrimitiveNumberHolder) other;
+			return Objects.equals(shortValue, castOther.shortValue) && Objects.equals(intValue, castOther.intValue)
+					&& Objects.equals(longValue, castOther.longValue)
+					&& Objects.equals(floatValue, castOther.floatValue)
+					&& Objects.equals(doubleValue, castOther.doubleValue);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(shortValue, intValue, longValue, floatValue, doubleValue);
 		}
     }
     
