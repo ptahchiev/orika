@@ -73,7 +73,6 @@ import static org.junit.Assert.assertNotNull;
 public class ConstructorMappingTestCase {
 
     private static final String DATE_CONVERTER = "dateConverter";
-
     private static final String DATE_PATTERN = "dd/MM/yyyy";
 
     @Test
@@ -82,7 +81,12 @@ public class ConstructorMappingTestCase {
         final SimpleDateFormat df = new SimpleDateFormat(DATE_PATTERN);
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(PersonVO.class, Person.class).fieldMap("dateOfBirth", "date").converter(DATE_CONVERTER).add().byDefault().register();
+        factory.classMap(PersonVO.class, Person.class)
+               .fieldMap("dateOfBirth", "date")
+               .converter(DATE_CONVERTER)
+               .add()
+               .byDefault()
+               .register();
 
         factory.getConverterFactory().registerConverter(DATE_CONVERTER, new DateToStringConverter(DATE_PATTERN));
 
@@ -100,13 +104,18 @@ public class ConstructorMappingTestCase {
         Assert.assertEquals("01/01/1980", vo.getDateOfBirth());
     }
 
+
     @Test
     public void testFindConstructor() throws Throwable {
         final SimpleDateFormat df = new SimpleDateFormat(DATE_PATTERN);
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(PersonVO3.class, Person.class).fieldMap("dateOfBirth", "date").converter(DATE_CONVERTER).add().byDefault().register();
+        factory.classMap(PersonVO3.class, Person.class)
+               .fieldMap("dateOfBirth", "date").converter(DATE_CONVERTER).add()
+               .byDefault()
+               .register();
         factory.getConverterFactory().registerConverter(DATE_CONVERTER, new DateToStringConverter(DATE_PATTERN));
+
 
         Person person = new Person();
         person.setFirstName("Abdelkrim");
@@ -124,7 +133,7 @@ public class ConstructorMappingTestCase {
 
     public static long yearsDifference(final Date start, final Date end) {
         long diff = end.getTime() - start.getTime();
-        return diff / TimeUnit.SECONDS.toMillis(60 * 60 * 24 * 365);
+        return diff / TimeUnit.SECONDS.toMillis(60*60*24*365);
     }
 
     @Test
@@ -132,7 +141,11 @@ public class ConstructorMappingTestCase {
         final SimpleDateFormat df = new SimpleDateFormat(DATE_PATTERN);
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(PersonVO3.class, Person.class).field("firstName", "firstName").field("lastName", "lastName").field("dateOfBirth", "date").register();
+        factory.classMap(PersonVO3.class, Person.class)
+               .field("firstName", "firstName")
+               .field("lastName", "lastName")
+               .field("dateOfBirth", "date")
+               .register();
         factory.getConverterFactory().registerConverter(DATE_CONVERTER, new DateToStringConverter(DATE_PATTERN));
 
         Person person = new Person();
@@ -163,10 +176,11 @@ public class ConstructorMappingTestCase {
 
         factory.registerDefaultFieldMapper(new DefaultFieldMapper() {
 
-            public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
+            public String suggestMappedField(String fromProperty,
+                                             Type<?> fromPropertyType) {
                 if ("dateOfBirth".equals(fromProperty)) {
                     return "date";
-                } else if ("date".equals(fromProperty)) {
+                } else if("date".equals(fromProperty)) {
                     return "dateOfBirth";
                 }
                 return null;
@@ -174,6 +188,7 @@ public class ConstructorMappingTestCase {
         });
 
         factory.getConverterFactory().registerConverter(new DateToStringConverter(DATE_PATTERN));
+
 
         Person person = new Person();
         person.setFirstName("Abdelkrim");
@@ -193,14 +208,21 @@ public class ConstructorMappingTestCase {
     public void testPrimitiveToPrimitiveTypes() {
 
         PrimitiveHolder primitiveHolder =
-                        new PrimitiveHolder(Short.MAX_VALUE, Integer.MAX_VALUE, Long.MAX_VALUE, Float.MAX_VALUE, Double.MAX_VALUE, Character.MAX_VALUE, true,
-                                            Byte.MAX_VALUE);
+                        new PrimitiveHolder(
+                                        Short.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        Long.MAX_VALUE,
+                                        Float.MAX_VALUE,
+                                        Double.MAX_VALUE,
+                                        Character.MAX_VALUE,
+                                        true,
+                                        Byte.MAX_VALUE);
 
         MapperFactory factory = MappingUtil.getMapperFactory();
 
         PrimitiveHolderDTO dto = factory.getMapperFacade().map(primitiveHolder, PrimitiveHolderDTO.class);
 
-        assertValidMapping(primitiveHolder, dto);
+        assertValidMapping(primitiveHolder,dto);
 
         PrimitiveHolder mapBack = factory.getMapperFacade().map(dto, PrimitiveHolder.class);
 
@@ -211,8 +233,15 @@ public class ConstructorMappingTestCase {
     public void testPrimitiveToWrapperTypes() {
 
         PrimitiveHolder primitiveHolder =
-                        new PrimitiveHolder(Short.MAX_VALUE, Integer.MAX_VALUE, Long.MAX_VALUE, Float.MAX_VALUE, Double.MAX_VALUE, Character.MAX_VALUE, true,
-                                            Byte.MAX_VALUE);
+                        new PrimitiveHolder(
+                                        Short.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        Long.MAX_VALUE,
+                                        Float.MAX_VALUE,
+                                        Double.MAX_VALUE,
+                                        Character.MAX_VALUE,
+                                        true,
+                                        Byte.MAX_VALUE);
 
         MapperFactory factory = MappingUtil.getMapperFactory();
 
@@ -229,8 +258,15 @@ public class ConstructorMappingTestCase {
     public void testWrapperToWrapperTypes() {
 
         PrimitiveWrapperHolder primitiveHolder =
-                        new PrimitiveWrapperHolder(Short.MAX_VALUE, Integer.MAX_VALUE, Long.MAX_VALUE, Float.MAX_VALUE, Double.MAX_VALUE, Character.MAX_VALUE,
-                                                   true, Byte.MAX_VALUE);
+                        new PrimitiveWrapperHolder(
+                                        Short.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        Long.MAX_VALUE,
+                                        Float.MAX_VALUE,
+                                        Double.MAX_VALUE,
+                                        Character.MAX_VALUE,
+                                        true,
+                                        Byte.MAX_VALUE);
 
         MapperFactory factory = MappingUtil.getMapperFactory();
 
@@ -251,10 +287,11 @@ public class ConstructorMappingTestCase {
 
         factory.registerDefaultFieldMapper(new DefaultFieldMapper() {
 
-            public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
+            public String suggestMappedField(String fromProperty,
+                                             Type<?> fromPropertyType) {
                 if ("dateOfBirth".equals(fromProperty)) {
                     return "date";
-                } else if ("date".equals(fromProperty)) {
+                } else if("date".equals(fromProperty)) {
                     return "dateOfBirth";
                 }
                 return null;
@@ -298,11 +335,11 @@ public class ConstructorMappingTestCase {
 
         LibraryDTO mapped = mapper.map(library, LibraryDTO.class);
 
-        assertValidMapping(library, mapped);
+        assertValidMapping(library,mapped);
 
         Library libraryMapBack = mapper.map(mapped, LibraryImpl.class);
 
-        assertValidMapping(libraryMapBack, mapped);
+        assertValidMapping(libraryMapBack,mapped);
 
     }
 
@@ -311,8 +348,8 @@ public class ConstructorMappingTestCase {
 
         List<BookNested> books = new ArrayList<BookNested>(4);
 
-        AuthorNested author1 = new AuthorNested(new Name("Abdelkrim", "EL KHETTABI"));
-        AuthorNested author2 = new AuthorNested(new Name("Bill", "Shakespeare"));
+        AuthorNested author1 = new AuthorNested(new Name("Abdelkrim","EL KHETTABI"));
+        AuthorNested author2 = new AuthorNested(new Name("Bill","Shakespeare"));
 
         books.add(new BookNested("Book #1", author1));
         books.add(new BookNested("Book #2", author1));
@@ -323,29 +360,40 @@ public class ConstructorMappingTestCase {
 
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(AuthorNested.class, AuthorDTO.class).field("name.fullName", "name").byDefault().register();
+        factory.classMap(AuthorNested.class, AuthorDTO.class)
+               .field("name.fullName", "name")
+               .byDefault()
+               .register();
 
         MapperFacade mapper = factory.getMapperFacade();
 
         LibraryDTO mapped = mapper.map(library, LibraryDTO.class);
 
-        assertValidMapping(library, mapped);
+        assertValidMapping(library,mapped);
 
     	/*
-    	// this situation is a bit too complicated to handle normally; 
+    	// this situation is a bit too complicated to handle normally;
     	// how would Orika even know how to create a Name object which takes
     	// in multiple parameters it cannot find on the source object?
     	LibraryNested libraryMapBack = mapper.map(mapped, LibraryNested.class);
-    	
+
     	assertValidMapping(libraryMapBack,mapped);
-    	
+
     	*/
     }
+
 
     @Test
     public void testComplexMappingNestedTypes() {
 
-        PrimitiveNumberHolder numbers = new PrimitiveNumberHolder(Short.MAX_VALUE, Integer.MAX_VALUE, Long.MAX_VALUE, Float.MAX_VALUE, Double.MAX_VALUE);
+
+        PrimitiveNumberHolder numbers =
+                        new PrimitiveNumberHolder(
+                                        Short.MAX_VALUE,
+                                        Integer.MAX_VALUE,
+                                        Long.MAX_VALUE,
+                                        Float.MAX_VALUE,
+                                        Double.MAX_VALUE);
 
         NestedPrimitiveHolder primitiveHolder = new NestedPrimitiveHolder(numbers, Character.MAX_VALUE, Boolean.TRUE, Byte.MAX_VALUE);
 
@@ -353,10 +401,14 @@ public class ConstructorMappingTestCase {
 
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(NestedPrimitiveHolder.class, PrimitiveWrapperHolder.class).field("numbers.shortValue", "shortValue").field("numbers.intValue",
-                                                                                                                                    "intValue").field(
-                        "numbers.longValue", "longValue").field("numbers.floatValue", "floatValue").field("numbers.doubleValue",
-                                                                                                          "doubleValue").byDefault().register();
+        factory.classMap(NestedPrimitiveHolder.class, PrimitiveWrapperHolder.class)
+               .field("numbers.shortValue", "shortValue")
+               .field("numbers.intValue", "intValue")
+               .field("numbers.longValue", "longValue")
+               .field("numbers.floatValue", "floatValue")
+               .field("numbers.doubleValue", "doubleValue")
+               .byDefault()
+               .register();
 
         WrapperHolder wrapper = factory.getMapperFacade().map(holder, WrapperHolder.class);
 
@@ -364,39 +416,30 @@ public class ConstructorMappingTestCase {
 
     }
 
+
     public static class URLDto1 {
         public String protocolX;
-
         public String hostX;
-
         public int portX;
-
         public String fileX;
     }
 
     public static class URLDto2 {
         public String protocol;
-
         public String host;
-
         public String file;
     }
 
     public static class URLDto3 {
         public String protocol;
-
         public String host;
-
         public int port;
-
         public String file;
-
         public URLStreamHandler handler;
     }
 
     public static class URLDto4 {
         public URL context;
-
         public String spec;
     }
 
@@ -404,8 +447,12 @@ public class ConstructorMappingTestCase {
     public void testConstructorsWithoutDebugInfo() {
         MapperFactory factory = MappingUtil.getMapperFactory();
 
-        factory.classMap(URLDto1.class, URL.class).field("protocolX", "protocol").field("hostX", "host").field("portX", "port").field("fileX",
-                                                                                                                                      "file").register();
+        factory.classMap(URLDto1.class, URL.class)
+               .field("protocolX", "protocol")
+               .field("hostX", "host")
+               .field("portX", "port")
+               .field("fileX", "file")
+               .register();
         MapperFacade mapper = factory.getMapperFacade();
 
         URLDto1 dto1 = new URLDto1();
@@ -507,6 +554,7 @@ public class ConstructorMappingTestCase {
         assertEquals(wrappers.getByteValue().byteValue(), primitives.getByteValue());
     }
 
+
     private void assertValidMapping(Library library, LibraryDTO dto) {
 
         assertNotNull(library);
@@ -515,16 +563,16 @@ public class ConstructorMappingTestCase {
         assertNotNull(library.getBooks());
         assertNotNull(dto.getBooks());
 
-        List<Book> sortedBooks = library.getBooks();
+        List<Book> sortedBooks =library.getBooks();
 
         List<BookDTO> sortedDTOs = dto.getBooks();
 
         assertEquals(sortedBooks.size(), sortedDTOs.size());
 
-        for (int i = 0, count = sortedBooks.size(); i < count; ++i) {
+        for (int i = 0, count=sortedBooks.size(); i < count; ++i) {
             Book book = sortedBooks.get(i);
             BookDTO bookDto = sortedDTOs.get(i);
-            assertValidMapping(book, bookDto);
+            assertValidMapping(book,bookDto);
         }
     }
 
@@ -542,10 +590,10 @@ public class ConstructorMappingTestCase {
 
         assertEquals(sortedBooks.size(), sortedDTOs.size());
 
-        for (int i = 0, count = sortedBooks.size(); i < count; ++i) {
+        for (int i = 0, count=sortedBooks.size(); i < count; ++i) {
             BookNested book = sortedBooks.get(i);
             BookDTO bookDto = sortedDTOs.get(i);
-            assertValidMapping(book, bookDto);
+            assertValidMapping(book,bookDto);
         }
     }
 
@@ -566,12 +614,12 @@ public class ConstructorMappingTestCase {
     private void assertValidMapping(Author author, AuthorDTO authorDTO) {
         assertNotNull(author);
         assertNotNull(authorDTO);
-        assertEquals(author.getName(), authorDTO.getName());
+        assertEquals(author.getName(),authorDTO.getName());
     }
 
     private void assertValidMapping(AuthorNested author, AuthorDTO authorDTO) {
         assertNotNull(author);
         assertNotNull(authorDTO);
-        assertEquals(author.getName().getFullName(), authorDTO.getName());
+        assertEquals(author.getName().getFullName(),authorDTO.getName());
     }
 }
